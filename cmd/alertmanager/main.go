@@ -262,6 +262,7 @@ func run() int {
 	// metrics handler
 	marker := types.NewMarker(prometheus.DefaultRegisterer)
 
+	// silence init, every step need peer!!!--->gossip
 	silenceOpts := silence.Options{
 		SnapshotFile: filepath.Join(*dataDir, "silences"),
 		Retention:    *retention,
@@ -290,6 +291,7 @@ func run() int {
 		wg.Done()
 	}()
 
+	// sotpc for nflog and silence
 	defer func() {
 		close(stopc)
 		wg.Wait()
@@ -338,6 +340,7 @@ func run() int {
 		clusterPeer = peer
 	}
 
+	// restapi init
 	api, err := api.New(api.Options{
 		Alerts:      alerts,
 		Silences:    silences,
